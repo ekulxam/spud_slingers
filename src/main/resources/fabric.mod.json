@@ -3,9 +3,9 @@
 	"id": "spud_slingers",
 	"version": "${version}",
 	"name": "Spud Slingers",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "POTATO CANNON GO",
 	"authors": [
-		"Me!"
+		"Survivalblock"
 	],
 	"contact": {
 		"homepage": "",
@@ -18,6 +18,9 @@
 	"entrypoints": {
 		"main": [
 			"survivalblock.spud_slingers.common.SpudSlingers"
+		],
+		"client": [
+			"survivalblock.spud_slingers.client.SpudSlingersClient"
 		],
 		"fabric-datagen": [
 			"survivalblock.spud_slingers.common.datagen.SpudSlingersDataGenerator"
