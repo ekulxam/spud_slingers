@@ -1,0 +1,9 @@
+{
+  "death.attack.spud_slingers.hot_potato": "%1$s was cooked to death by a hot potato (oh no you died)",
+  "entity.spud_slingers.flying_potato": "Flying Potato",
+  "item.spud_slingers.hot_potato": "Hot Potato",
+  "item.spud_slingers.potato_cannon": "Potato Cannon",
+  "item.spud_slingers.very_baked_potato": "Very Baked Potato",
+  "item.spud_slingers.very_baked_potato.lore.0": "something tells me someone died for this",
+  "item.spud_slingers.very_baked_potato.lore.1": "- ActiveRadar, 2025"
+}

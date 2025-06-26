@@ -3,14 +3,20 @@
   "package": "survivalblock.spud_slingers.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "undroppable.LivingEntityMixin",
-    "undroppable.ServerPlayerEntityMixin",
-    "undroppable.ServerPlayNetworkHandlerMixin"
+    "cannon.CrossbowItemMixin",
+    "immovable.LivingEntityMixin",
+    "immovable.PlayerInventoryMixin",
+    "immovable.ServerPlayerEntityMixin",
+    "immovable.ServerPlayNetworkHandlerMixin"
   ],
   "client": [
-    "undroppable.client.ClientPlayerEntityMixin",
-    "undroppable.client.ClientPlayerInteractionManagerMixin",
-    "undroppable.client.HandledScreenMixin"
+    "cannon.client.ArmPoseAccessor",
+    "cannon.client.BipedEntityModelMixin",
+    "cannon.client.BipedEntityModelMixin$ArmPoseMixin",
+    "cannon.client.PlayerEntityRendererMixin",
+    "immovable.client.ClientPlayerEntityMixin",
+    "immovable.client.ClientPlayerInteractionManagerMixin",
+    "immovable.client.HandledScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1

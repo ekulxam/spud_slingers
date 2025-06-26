@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "spud_slingers:item/very_baked_potato"
+  }
+}

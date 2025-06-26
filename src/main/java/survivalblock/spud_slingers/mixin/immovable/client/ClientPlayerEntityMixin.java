@@ -1,4 +1,4 @@
-package survivalblock.spud_slingers.mixin.undroppable.client;
+package survivalblock.spud_slingers.mixin.immovable.client;
 
 import com.mojang.authlib.GameProfile;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import survivalblock.spud_slingers.common.item.Undroppable;
+import survivalblock.spud_slingers.common.item.Immovable;
 
 @Mixin(ClientPlayerEntity.class)
 public abstract class ClientPlayerEntityMixin extends AbstractClientPlayerEntity {
@@ -19,7 +19,7 @@ public abstract class ClientPlayerEntityMixin extends AbstractClientPlayerEntity
 
     @Inject(method = "dropSelectedItem", at = @At("HEAD"), cancellable = true)
     private void noDropClient(boolean entireStack, CallbackInfoReturnable<Boolean> cir) {
-        if (this.getInventory().getSelectedStack().getItem() instanceof Undroppable) {
+        if (this.getInventory().getSelectedStack().getItem() instanceof Immovable) {
             cir.setReturnValue(true);
         }
     }
