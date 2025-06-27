@@ -3,6 +3,7 @@ package survivalblock.spud_slingers.common.init;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.component.type.ConsumableComponent;
 import net.minecraft.component.type.ConsumableComponents;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -30,7 +31,7 @@ public class SpudSlingersItems {
 
     public static final Item HOT_POTATO = registerItem("hot_potato", new Item.Settings().fireproof().maxCount(3), HotPotatoItem::new);
     public static final Item VERY_BAKED_POTATO = registerItem("very_baked_potato", new Item.Settings().food(BAKED_POTATO, BURNT_POTATO).rarity(Rarity.EPIC), Item::new);
-    public static final Item POTATO_CANNON = registerItem("potato_cannon", new Item.Settings().fireproof().maxCount(1).rarity(Rarity.UNCOMMON), PotatoCannonItem::new);
+    public static final Item POTATO_CANNON = registerItem("potato_cannon", new Item.Settings().fireproof().maxCount(1).rarity(Rarity.UNCOMMON).equippable(EquipmentSlot.HEAD), PotatoCannonItem::new);
 
     @SuppressWarnings("SameParameterValue")
     private static <T extends Item> T registerItem(String name, Item.Settings settings, Function<Item.Settings, T> itemFromSettings) {

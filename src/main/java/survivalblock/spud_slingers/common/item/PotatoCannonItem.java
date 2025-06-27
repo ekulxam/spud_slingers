@@ -4,17 +4,15 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.CrossbowItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.consume.UseAction;
 import net.minecraft.world.World;
 import survivalblock.spud_slingers.common.entity.FlyingPotatoEntity;
-import survivalblock.spud_slingers.common.init.SpudSlingersItems;
+import survivalblock.spud_slingers.common.init.SpudSlingersTags;
 
 import java.util.function.Predicate;
 
 public class PotatoCannonItem extends CrossbowItem {
 
-    public static final Predicate<ItemStack> FLYING_POTATOES = stack -> stack.isOf(Items.POTATO) || stack.isOf(Items.POISONOUS_POTATO) || stack.isOf(SpudSlingersItems.HOT_POTATO);
+    public static final Predicate<ItemStack> FLYING_POTATOES = stack -> stack.isIn(SpudSlingersTags.POTATO_CANNON_AMMUNITION);
 
     public PotatoCannonItem(Settings settings) {
         super(settings);
@@ -31,13 +29,8 @@ public class PotatoCannonItem extends CrossbowItem {
     }
 
     @Override
-    public UseAction getUseAction(ItemStack stack) {
-        return UseAction.CROSSBOW;
-    }
-
-    @Override
     protected ProjectileEntity createArrowEntity(World world, LivingEntity shooter, ItemStack weaponStack, ItemStack projectileStack, boolean critical) {
-        if (FLYING_POTATOES.test(projectileStack)) {
+        if (this.getProjectiles().test(projectileStack)) {
             return new FlyingPotatoEntity(shooter, world, projectileStack, weaponStack);
         }
         return super.createArrowEntity(world, shooter, weaponStack, projectileStack, critical);

@@ -20,11 +20,17 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import survivalblock.spud_slingers.common.init.SpudSlingersEntityTypes;
 import survivalblock.spud_slingers.common.init.SpudSlingersItems;
+import survivalblock.spud_slingers.common.init.SpudSlingersTags;
+
+import java.util.Objects;
+import java.util.function.Supplier;
 
 public class FlyingPotatoEntity extends PersistentProjectileEntity implements FlyingItemEntity {
 
-    public static final TrackedData<Boolean> HOT = DataTracker.registerData(FlyingPotatoEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
-    public static final TrackedData<Boolean> POISON = DataTracker.registerData(FlyingPotatoEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+    public static final Supplier<ItemStack> DEFAULT_STACK_SUPPLIER = Items.POTATO::getDefaultStack;
+
+    public static final TrackedData<ItemStack> RENDER_STACK
+            = DataTracker.registerData(FlyingPotatoEntity.class, TrackedDataHandlerRegistry.ITEM_STACK);
 
     public FlyingPotatoEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
         super(entityType, world);
@@ -46,8 +52,18 @@ public class FlyingPotatoEntity extends PersistentProjectileEntity implements Fl
     }
 
     protected void initTrackedDataFromStack(ItemStack stack) {
-        this.dataTracker.set(HOT, stack.isOf(SpudSlingersItems.HOT_POTATO));
-        this.dataTracker.set(POISON, stack.isOf(Items.POISONOUS_POTATO));
+        this.dataTracker.set(RENDER_STACK, stack);
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (!this.getWorld().isClient()) {
+            ItemStack stack = this.getItemStack();
+            if(!ItemStack.areItemsAndComponentsEqual(this.dataTracker.get(RENDER_STACK), this.getItemStack())) {
+                initTrackedDataFromStack(stack);
+            }
+        }
     }
 
     @Override
@@ -55,56 +71,55 @@ public class FlyingPotatoEntity extends PersistentProjectileEntity implements Fl
         return this.getDefaultItemStack();
     }
 
-    public boolean isHot() {
-        return this.dataTracker.get(HOT);
-    }
-
-    public boolean isPoison() {
-        return this.dataTracker.get(POISON);
-    }
-
     @Override
     public boolean isOnFire() {
-        return this.isHot();
+        return this.dataTracker.get(RENDER_STACK).isIn(SpudSlingersTags.FIERY_POTATOES);
     }
 
     @Override
     protected void initDataTracker(DataTracker.Builder builder) {
         super.initDataTracker(builder);
-        builder.add(HOT, false);
-        builder.add(POISON, false);
+        builder.add(RENDER_STACK, DEFAULT_STACK_SUPPLIER.get());
     }
 
     @Override
     protected ItemStack getDefaultItemStack() {
-        if (this.isHot()) {
-            return new ItemStack(SpudSlingersItems.HOT_POTATO);
-        }
-        if (this.isPoison()) {
-            return new ItemStack(Items.POISONOUS_POTATO);
-        }
-        return new ItemStack(Items.POTATO);
+        return this.dataTracker.get(RENDER_STACK).copy();
     }
 
     @Override
     protected void onEntityHit(EntityHitResult entityHitResult) {
-        if (entityHitResult.getEntity() instanceof LivingEntity living) {
-            this.onHit(living);
-            if (!(living.getWorld() instanceof ServerWorld serverWorld)) {
-                return;
+        if (!(entityHitResult.getEntity() instanceof LivingEntity living)) {
+            if (this.getWorld() instanceof ServerWorld serverWorld) {
+                this.dropPotato(serverWorld);
+                this.discard();
             }
-            ItemStack stack = this.asItemStack();
-            if (this.isPoison()) {
-                stack.getOrDefault(DataComponentTypes.CONSUMABLE, ConsumableComponents.POISONOUS_POTATO)
-                        .onConsumeEffects()
-                        .forEach(consumeEffect -> consumeEffect.onConsume(serverWorld, stack.copy(), living));
+            return;
+        }
+        if (living.getType() == EntityType.ENDERMAN) {
+            if (this.getWorld() instanceof ServerWorld serverWorld) {
+                this.dropPotato(serverWorld);
+                this.discard();
             }
-            if (living instanceof PlayerEntity player) {
-                player.getInventory().offerOrDrop(stack);
-            } else {
-                this.dropStack(serverWorld, stack);
-            }
-            this.discard();
+            return;
+        }
+        this.onHit(living);
+        if (!(living.getWorld() instanceof ServerWorld serverWorld)) {
+            return;
+        }
+        ItemStack stack = this.asItemStack();
+        if (stack.isIn(SpudSlingersTags.POISON_POTATOES)) {
+            stack.getOrDefault(DataComponentTypes.CONSUMABLE, ConsumableComponents.POISONOUS_POTATO)
+                    .onConsumeEffects()
+                    .forEach(consumeEffect -> consumeEffect.onConsume(serverWorld, stack.copy(), living));
+        }
+        if (this.isOnFire()) {
+            living.setOnFireForTicks(100);
+        }
+        if (living instanceof PlayerEntity player) {
+            player.getInventory().offerOrDrop(stack);
+        } else {
+            this.dropPotato(serverWorld);
         }
     }
 
@@ -114,7 +129,13 @@ public class FlyingPotatoEntity extends PersistentProjectileEntity implements Fl
         if (!(this.getWorld() instanceof ServerWorld serverWorld)) {
             return;
         }
-        this.dropStack(serverWorld, this.asItemStack());
+        this.dropPotato(serverWorld);
         this.discard();
+    }
+
+    protected void dropPotato(ServerWorld serverWorld) {
+        if (PickupPermission.ALLOWED == this.pickupType) {
+            this.dropStack(serverWorld, this.asItemStack());
+        }
     }
 }

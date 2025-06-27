@@ -14,17 +14,8 @@ public class SpudSlingersDataGenerator implements DataGeneratorEntrypoint {
 		FabricDataGenerator.Pack pack = fabricDataGenerator.createPack();
 		pack.addProvider(SpudSlingersModelGenerator::new);
 		pack.addProvider(SpudSlingersEnUSLangGenerator::new);
-		pack.addProvider((fabricDataOutput, completableFuture) -> new FabricDynamicRegistryProvider(fabricDataOutput, completableFuture) {
-			@Override
-			protected void configure(RegistryWrapper.WrapperLookup wrapperLookup, Entries entries) {
-				SpudSlingersDamageTypes.asDamageTypes().forEach(entries::add);
-			}
-
-			@Override
-			public String getName() {
-				return "Damage types";
-			}
-		});
+		pack.addProvider(SpudSlingersDamageTypeGenerator::new);
+		pack.addProvider(SpudSlingersTagGenerator.Item::new);
 	}
 
 	@Override
