@@ -4,7 +4,6 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
-import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -14,8 +13,6 @@ import survivalblock.spud_slingers.common.init.SpudSlingersItems;
 import java.util.function.Supplier;
 
 public class SpudSlingersClient implements ClientModInitializer {
-
-    public static BipedEntityModel.ArmPose spud_slingers$cannonPose;
 
     @Override
     public void onInitializeClient() {

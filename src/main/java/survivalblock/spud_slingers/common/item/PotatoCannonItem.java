@@ -32,7 +32,7 @@ public class PotatoCannonItem extends CrossbowItem {
 
     @Override
     public UseAction getUseAction(ItemStack stack) {
-        return UseAction.BOW;
+        return UseAction.CROSSBOW;
     }
 
     @Override

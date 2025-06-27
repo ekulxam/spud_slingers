@@ -10,9 +10,7 @@
     "immovable.ServerPlayNetworkHandlerMixin"
   ],
   "client": [
-    "cannon.client.ArmPoseAccessor",
-    "cannon.client.BipedEntityModelMixin",
-    "cannon.client.BipedEntityModelMixin$ArmPoseMixin",
+    "cannon.client.HeldItemRendererMixin",
     "cannon.client.PlayerEntityRendererMixin",
     "immovable.client.ClientPlayerEntityMixin",
     "immovable.client.ClientPlayerInteractionManagerMixin",
