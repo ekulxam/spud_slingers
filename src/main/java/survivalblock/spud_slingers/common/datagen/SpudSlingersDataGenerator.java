@@ -2,10 +2,8 @@ package survivalblock.spud_slingers.common.datagen;
 
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricDynamicRegistryProvider;
 import net.minecraft.registry.RegistryBuilder;
 import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.RegistryWrapper;
 import survivalblock.spud_slingers.common.init.SpudSlingersDamageTypes;
 
 public class SpudSlingersDataGenerator implements DataGeneratorEntrypoint {
@@ -16,6 +14,7 @@ public class SpudSlingersDataGenerator implements DataGeneratorEntrypoint {
 		pack.addProvider(SpudSlingersEnUSLangGenerator::new);
 		pack.addProvider(SpudSlingersDamageTypeGenerator::new);
 		pack.addProvider(SpudSlingersTagGenerator.Item::new);
+		pack.addProvider(SpudSlingersRecipeGenerator::new);
 	}
 
 	@Override

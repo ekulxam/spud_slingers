@@ -2,6 +2,7 @@ package survivalblock.spud_slingers.common.item;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.DamageType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -106,5 +107,11 @@ public class HotPotatoItem extends Item implements Immovable {
         }
         float delta = ((float) Math.sin(Util.getMeasuringTimeMs() * 0.008) + 1) * 0.5f;
         return text.copy().withColor(ColorHelper.lerp(delta, WARN_0, WARN_1));
+    }
+
+    @Override
+    public void postDamageEntity(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        super.postDamageEntity(stack, target, attacker);
+        target.setOnFireForTicks(40);
     }
 }
